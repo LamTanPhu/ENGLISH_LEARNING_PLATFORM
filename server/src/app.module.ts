@@ -9,6 +9,8 @@ import { VocabularyModule } from './modules/vocabulary/vocabulary.module';
 import { FlashcardSetsModule } from './modules/flashcard_sets/flashcard-sets.module';
 import { UserProgressModule } from './modules/user_progress/user-progress.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { VotesModule } from './modules/votes/votes.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
 import envConfig from './config/env.config';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { ErrorMiddleware } from './middleware/error.middleware';
@@ -29,6 +31,8 @@ import { mongooseConfig } from './db/mongoose.config';
     FlashcardSetsModule,
     UserProgressModule,
     CommentsModule,
+    VotesModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware, ErrorMiddleware],
