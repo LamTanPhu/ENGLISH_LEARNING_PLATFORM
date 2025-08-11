@@ -14,7 +14,8 @@ export class Comment {
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     author: User;
 
-    @Prop({ enum: ['vocabulary', 'flashcardSet'], required: true })
+    // Must match Mongoose model names for refPath to work
+    @Prop({ enum: ['Vocabulary', 'FlashcardSet'], required: true })
     targetType: string;
 
     @Prop({ type: Types.ObjectId, refPath: 'targetType', required: true })

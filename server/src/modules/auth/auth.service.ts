@@ -18,7 +18,7 @@ export class AuthService {
         const hashedPassword = await hashPassword(password);
         const userData = { email, password: hashedPassword, username, role: 'student' };
         const user: UserDocument = await this.userRepository.create(userData);
-        const token = this.tokenService.createToken({ userId: user.id.toString(), email, role: user.role });
+        const token = this.tokenService.createToken({ userId: user.id.toString(), email, role: user.role, username: user.username });
         return { token };
     }
 
@@ -28,7 +28,7 @@ export class AuthService {
         if (!user || !(await comparePassword(password, user.password))) {
         throw new UnauthorizedException('Invalid credentials');
         }
-        const token = this.tokenService.createToken({ userId: user.id.toString(), email, role: user.role });
+        const token = this.tokenService.createToken({ userId: user.id.toString(), email, role: user.role, username: user.username });
         return { token };
     }
 }

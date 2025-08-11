@@ -6,10 +6,10 @@ export class CreateCommentDto {
     content: string;
 
     @IsMongoId()
-    @IsNotEmpty()
-    author: string;
+    @IsOptional()
+    author?: string;
 
-    @IsEnum(['vocabulary', 'flashcardSet'], { message: 'targetType must be either vocabulary or flashcardSet' })
+    @IsEnum(['Vocabulary', 'FlashcardSet'], { message: 'targetType must be either Vocabulary or FlashcardSet' })
     @IsNotEmpty()
     targetType: string;
 

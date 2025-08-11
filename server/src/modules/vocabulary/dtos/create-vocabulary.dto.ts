@@ -34,8 +34,8 @@ export class CreateVocabularyDto {
     tags?: string[];
 
     @IsMongoId()
-    @IsNotEmpty()
-    createdBy: string;
+    @IsOptional()
+    createdBy?: string;
 
     @IsOptional()
     @IsInt()

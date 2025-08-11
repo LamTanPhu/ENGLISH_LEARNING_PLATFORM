@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import type { Request } from 'express';
 import { CreateVoteDto } from './dtos/create-vote.dto';
 import { VotesService } from './votes.service';
 
@@ -19,8 +20,9 @@ export class VotesController {
     }
 
     @Post()
-    async create(@Body() createVoteDto: CreateVoteDto) {
-        return this.votesService.create(createVoteDto);
+    async create(@Body() createVoteDto: CreateVoteDto, @Req() req: Request) {
+        const userId = (req as any).user?.userId;
+        return this.votesService.create({ ...createVoteDto, userId });
     }
 
     @Delete(':id')

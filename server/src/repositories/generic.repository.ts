@@ -1,4 +1,4 @@
-import { Model, Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 export interface GenericRepository<T extends Document> {
     findAll(): Promise<T[]>;
@@ -7,6 +7,7 @@ export interface GenericRepository<T extends Document> {
     update(id: string, item: any): Promise<T | null>;
     delete(id: string): Promise<T | null>;
     findOneByQuery(query: any): Promise<T | null>; // New method
+    findByQuery(query: any): Promise<T[]>; // New method for list
 }
 
     export class GenericRepository<T extends Document> implements GenericRepository<T> {
@@ -39,5 +40,9 @@ export interface GenericRepository<T extends Document> {
 
     async findOneByQuery(query: any): Promise<T | null> {
         return this.model.findOne(query).exec();
+    }
+
+    async findByQuery(query: any): Promise<T[]> {
+        return this.model.find(query).exec();
     }
 }

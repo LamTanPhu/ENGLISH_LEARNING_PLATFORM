@@ -1,4 +1,4 @@
-import { IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateVoteDto {
     @IsMongoId()
@@ -6,8 +6,8 @@ export class CreateVoteDto {
     resourceId: string;
 
     @IsMongoId()
-    @IsNotEmpty()
-    userId: string;
+    @IsOptional()
+    userId?: string;
 
     @IsEnum(['upvote', 'downvote'], { message: 'type must be upvote or downvote' })
     @IsNotEmpty()

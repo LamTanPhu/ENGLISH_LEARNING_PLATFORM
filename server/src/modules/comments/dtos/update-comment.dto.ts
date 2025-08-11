@@ -11,7 +11,7 @@ export class UpdateCommentDto {
     author?: string;
 
     @IsOptional()
-    @IsEnum(['vocabulary', 'flashcardSet'], { message: 'targetType must be either vocabulary or flashcardSet' })
+    @IsEnum(['Vocabulary', 'FlashcardSet'], { message: 'targetType must be either Vocabulary or FlashcardSet' })
     targetType?: string;
 
     @IsOptional()

@@ -8,7 +8,7 @@ export class AuthUseCase {
         const token = response.data.token;
         this.storage.setToken(token);
         const payload = JSON.parse(atob(token.split('.')[1]));
-        return { userId: payload.userId, email: payload.email, role: payload.role, username: '', level: 'beginner', points: 0 };
+        return { userId: payload.userId, email: payload.email, role: payload.role, username: payload.username || '', level: 'beginner', points: 0 };
     }
 
     async register(email: string, password: string, username: string): Promise<User> {
@@ -27,7 +27,7 @@ export class AuthUseCase {
         const token = this.storage.getToken();
         if (!token) return null;
         const payload = JSON.parse(atob(token.split('.')[1]));
-        return { userId: payload.userId, email: payload.email, role: payload.role, username: '', level: 'beginner', points: 0 };
+        return { userId: payload.userId, email: payload.email, role: payload.role, username: payload.username || '', level: 'beginner', points: 0 };
     }
 }
 

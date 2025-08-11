@@ -10,8 +10,8 @@ export class CreateFlashcardSetDto {
     description?: string;
 
     @IsMongoId()
-    @IsNotEmpty()
-    createdBy: string;
+    @IsOptional()
+    createdBy?: string;
 
     @IsArray()
     @IsOptional()
