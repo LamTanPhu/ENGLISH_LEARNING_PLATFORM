@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import type { Request } from 'express';
 import { CreateVocabularyDto } from './dtos/create-vocabulary.dto';
 import { UpdateVocabularyDto } from './dtos/update-vocabulary.dto';
 import { VocabularyService } from './vocabulary.service';
@@ -20,8 +21,10 @@ export class VocabularyController {
     }
 
     @Post()
-    async create(@Body() createVocabularyDto: CreateVocabularyDto) {
-        return this.vocabularyService.create(createVocabularyDto);
+    async create(@Body() createVocabularyDto: CreateVocabularyDto, @Req() req: Request) {
+        const userId = (req as any).user?.userId;
+        const payload = { ...createVocabularyDto, createdBy: userId };
+        return this.vocabularyService.create(payload as any);
     }
 
     @Put(':id')

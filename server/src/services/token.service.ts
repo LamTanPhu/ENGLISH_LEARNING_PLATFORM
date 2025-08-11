@@ -6,7 +6,7 @@ import { sign, verify, JwtPayload } from 'jsonwebtoken';
 export class TokenService {
     constructor(private configService: ConfigService) {}
 
-    createToken(payload: { userId: string; email?: string; role?: string }): string {
+    createToken(payload: { userId: string; email?: string; role?: string; username?: string }): string {
         const secret = this.configService.get<string>('JWT_SECRET');
         if (!secret) throw new Error('JWT_SECRET is not configured');
         return sign(payload, secret, { expiresIn: '1h' });

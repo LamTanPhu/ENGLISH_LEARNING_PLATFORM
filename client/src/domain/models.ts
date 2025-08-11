@@ -17,6 +17,7 @@ export interface Vocabulary {
     example?: string;
     createdBy?: string; // Reference to User.userId
     createdAt?: Date;
+    likes?: number;
 }
 
 export interface Flashcard {

@@ -26,4 +26,8 @@ export class CommentsService {
     async delete(id: string): Promise<any> {
         return this.commentRepository.delete(id);
     }
+
+    async findByTarget(targetType: string, targetId: string): Promise<any[]> {
+        return this.commentRepository.findByQuery({ targetType, targetId });
+    }
 }

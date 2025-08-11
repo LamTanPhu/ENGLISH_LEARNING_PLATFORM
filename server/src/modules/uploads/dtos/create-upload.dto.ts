@@ -2,8 +2,8 @@ import { IsMongoId, IsNotEmpty, IsString, IsEnum, IsOptional, IsInt } from 'clas
 
 export class CreateUploadDto {
     @IsMongoId()
-    @IsNotEmpty()
-    uploadedBy: string;
+    @IsOptional()
+    uploadedBy?: string;
 
     @IsString()
     @IsNotEmpty()

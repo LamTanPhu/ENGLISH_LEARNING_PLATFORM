@@ -1,20 +1,23 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/user/users.module';
-import { VocabularyModule } from './modules/vocabulary/vocabulary.module';
-import { FlashcardSetsModule } from './modules/flashcard_sets/flashcard-sets.module';
-import { UserProgressModule } from './modules/user_progress/user-progress.module';
-import { CommentsModule } from './modules/comments/comments.module';
-import { VotesModule } from './modules/votes/votes.module';
-import { UploadsModule } from './modules/uploads/uploads.module';
 import envConfig from './config/env.config';
+import { mongooseConfig } from './db/mongoose.config';
+import { RolesGuard } from './guards/roles.guard';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { ErrorMiddleware } from './middleware/error.middleware';
-import { mongooseConfig } from './db/mongoose.config';
+import { RateLimitMiddleware } from './middleware/rate-limit.middleware';
+import { AuthModule } from './modules/auth/auth.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { FlashcardSetsModule } from './modules/flashcard_sets/flashcard-sets.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
+import { UsersModule } from './modules/user/users.module';
+import { UserProgressModule } from './modules/user_progress/user-progress.module';
+import { VocabularyModule } from './modules/vocabulary/vocabulary.module';
+import { VotesModule } from './modules/votes/votes.module';
 
 @Module({
   imports: [
@@ -35,6 +38,18 @@ import { mongooseConfig } from './db/mongoose.config';
     UploadsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthMiddleware, ErrorMiddleware],
+  providers: [
+    AppService,
+    AuthMiddleware,
+    ErrorMiddleware,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ErrorMiddleware, RateLimitMiddleware).forRoutes('*');
+  }
+}

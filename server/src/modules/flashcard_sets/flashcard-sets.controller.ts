@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
-import { FlashcardSetsService } from './flashcard-sets.service';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import type { Request } from 'express';
 import { CreateFlashcardSetDto } from './dtos/create-flashcard-set.dto';
 import { UpdateFlashcardSetDto } from './dtos/update-flashcard-set.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { FlashcardSetsService } from './flashcard-sets.service';
 
 @Controller('flashcard-sets')
 @UseGuards(AuthGuard('jwt'))
@@ -20,8 +21,10 @@ export class FlashcardSetsController {
     }
 
     @Post()
-    async create(@Body() createFlashcardSetDto: CreateFlashcardSetDto) {
-        return this.flashcardSetsService.create(createFlashcardSetDto);
+    async create(@Body() createFlashcardSetDto: CreateFlashcardSetDto, @Req() req: Request) {
+        const userId = (req as any).user?.userId;
+        const payload = { ...createFlashcardSetDto, createdBy: userId };
+        return this.flashcardSetsService.create(payload as any);
     }
 
     @Put(':id')
